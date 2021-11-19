@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Implementing REST API for Kinesis
+
+  '
+Globals:
+  Function:
+    MemorySize: 512
+    Timeout: 100
+Resources:
+  KinesisTestApi:
+    Type: AWS::Serverless::Api
+    DependsOn: ApiKinesisExecutionRole
+    Properties:
+      Name: kinesis-test-api
+      StageName: dev
+      EndpointConfiguration:
+        Type: REGIONAL
+      TracingEnabled: true
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: ../../src/api/api.yaml
+  MyKinesisStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      RetentionPeriodHours: 168
+      ShardCount: 1
+      Name: KinesisTestAPIStream
+  ApiKinesisExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - apigateway.amazonaws.com
+          Action: sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+      - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
+  ApiDynamoDBExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - apigateway.amazonaws.com
+          Action: sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+  ApplicationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Handler for Lambda function that process Kinesis data streams
+      CodeUri: ApplicationFunction
+      Runtime: python3.9
+      Handler: lambda_function.lambda_handler
+      Tracing: Active
+      FunctionName: KinesisTestAPIStreamFunction
+      Policies:
+      - AmazonDynamoDBFullAccess
+      Events:
+        Stream:
+          Type: Kinesis
+          Properties:
+            Stream:
+              Fn::GetAtt:
+              - MyKinesisStream
+              - Arn
+            StartingPosition: TRIM_HORIZON
+            BatchSize: 100
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: KinesisTestAPIStream
+      AttributeDefinitions:
+      - AttributeName: pk
+        AttributeType: S
+      KeySchema:
+      - AttributeName: pk
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TimeToLiveSpecification:
+        AttributeName: TimeToLive
+        Enabled: 'TRUE'
+Outputs:
+  KinesisStream:
+    Description: Kinesis Data Stream name
+    Value:
+      Ref: MyKinesisStream
+  APIEndpoint:
+    Description: API Gateway endpoint URL
+    Value:
+      Fn::Sub: https://${KinesisTestApi}.execute-api.${AWS::Region}.amazonaws.com/dev
