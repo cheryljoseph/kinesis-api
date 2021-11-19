@@ -44,7 +44,7 @@ Parameters:
     Default: "us-east-1"
   TestingStackName:
     Type: String
-    Default: "kinesis-test-dev"
+    Default: "kinesis-dev"
   TestingPipelineExecutionRole:
     Type: String
     Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-dev-pipe-PipelineExecutionRole-1US2DNR9EJMFS"
@@ -65,7 +65,7 @@ Parameters:
     Default: "us-east-1"
   ProdStackName:
     Type: String
-    Default: "kinesis-test-prod"
+    Default: "kinesis-prod"
   ProdPipelineExecutionRole:
     Type: String
     Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-prod-pip-PipelineExecutionRole-1EX8BGC6U5HO9"

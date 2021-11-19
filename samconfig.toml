@@ -2,9 +2,9 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "kinesis-test"
+stack_name = "kinesis-dev"
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1b194xt23xtea"
-s3_prefix = "kinesis-test"
+s3_prefix = "kinesis-dev"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
