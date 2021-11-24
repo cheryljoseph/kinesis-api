@@ -44,16 +44,16 @@ Parameters:
     Default: "us-east-1"
   TestingStackName:
     Type: String
-    Default: "kinesis-dev"
+    Default: "kinesis-alpha"
   TestingPipelineExecutionRole:
     Type: String
-    Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-dev-pipe-PipelineExecutionRole-1US2DNR9EJMFS"
+    Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-alpha-pi-PipelineExecutionRole-VGY8XF999LCY"
   TestingCloudFormationExecutionRole:
     Type: String
-    Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-dev-p-CloudFormationExecutionR-1RTBWHTPP8MV0"
+    Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-alpha-CloudFormationExecutionR-12B3GW3SEY1YW"
   TestingArtifactBucket:
     Type: String
-    Default: "aws-sam-cli-managed-dev-pipeline-artifactsbucket-101komjpjt5o0"
+    Default: "aws-sam-cli-managed-alpha-pipelin-artifactsbucket-104ue8h3du0a4"
   TestingImageRepository:
     Type: String
     # If there are functions with "Image" PackageType in your template,
@@ -65,16 +65,16 @@ Parameters:
     Default: "us-east-1"
   ProdStackName:
     Type: String
-    Default: "kinesis-prod"
+    Default: "kinesis-gamma"
   ProdPipelineExecutionRole:
     Type: String
-    Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-prod-pip-PipelineExecutionRole-1EX8BGC6U5HO9"
+    Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-gamma-pi-PipelineExecutionRole-5C0S7INY1NX1"
   ProdCloudFormationExecutionExeRole:
     Type: String
-    Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-prod-CloudFormationExecutionR-1MWNWVRSNPZDA"
+    Default: "arn:aws:iam::386130166890:role/aws-sam-cli-managed-gamma-CloudFormationExecutionR-S2W2K5R4SRPB"
   ProdArtifactBucket:
     Type: String
-    Default: "aws-sam-cli-managed-prod-pipeline-artifactsbucket-q4h6z46otuw9"
+    Default: "aws-sam-cli-managed-gamma-pipelin-artifactsbucket-1cd2qr3td45gx"
   ProdImageRepository:
     Type: String
     # If there are functions with "Image" PackageType in your template,

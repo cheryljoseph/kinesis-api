@@ -31,7 +31,7 @@ Resources:
     Properties:
       RetentionPeriodHours: 168
       ShardCount: 1
-      Name: KinesisTestAPIStream
+
 
 # Define API Gateway role to access Kinesis actions
   ApiKinesisExecutionRole:
@@ -92,7 +92,6 @@ Resources:
   DynamoDBTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: KinesisTestAPIStream
       # A list of attributes that describe the key schema for the DynamoDB table.
       AttributeDefinitions:
         - AttributeName: pk
