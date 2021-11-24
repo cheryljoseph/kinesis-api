@@ -13,6 +13,7 @@ Resources:
     Type: AWS::Serverless::Api
     DependsOn: ApiKinesisExecutionRole
     Properties:
+      Name: kinesis-test-api
       StageName: dev
       EndpointConfiguration:
         Type: REGIONAL
@@ -30,25 +31,24 @@ Resources:
     Properties:
       RetentionPeriodHours: 168
       ShardCount: 1
-
+      Name: KinesisTestAPIStream
 
 # Define API Gateway role to access Kinesis actions
   ApiKinesisExecutionRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - apigateway.amazonaws.com
-            Action: "sts:AssumeRole"
+        - Effect: Allow
+          Principal:
+            Service:
+            - apigateway.amazonaws.com
+          Action: "sts:AssumeRole"
       Path: /
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
-        - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
-
+      - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+      - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
   # Define API Gateway role to access DynamoDB
   ApiDynamoDBExecutionRole:
     Type: AWS::IAM::Role
@@ -56,16 +56,15 @@ Resources:
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - apigateway.amazonaws.com
-            Action: "sts:AssumeRole"
+        - Effect: Allow
+          Principal:
+            Service:
+            - apigateway.amazonaws.com
+          Action: sts:AssumeRole
       Path: /
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
-        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-        
+      - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
   # Define an AWS Lambda and attach it to the application consumer
   ApplicationFunction:
     Type: AWS::Serverless::Function
@@ -93,6 +92,7 @@ Resources:
   DynamoDBTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
+      TableName: KinesisTestAPIStream
       # A list of attributes that describe the key schema for the DynamoDB table.
       AttributeDefinitions:
         - AttributeName: pk
